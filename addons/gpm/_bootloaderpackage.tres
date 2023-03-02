@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://addons/gpm/base_package/bootloaderpackagedescription.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+filename = "bootloaderpackage"
+paths = [ "res://addons/gpm/base_package", "res://addons/gpm/import" ]
+ignore_paths = [  ]
+root_path_override = ""
+accepted_extensions = [ "png", "jpg", "webp", "tscn", "gltf", "tres", "gd", "ttf", "json", "spine-json", "atlas", "txt", "material" ]
+export_dependencies_when_exported = false
+dependencies = [  ]

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://addons/gpm/base_package/packagedescription.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+filename = "testpackagehq"
+paths = [ "res://demo/TestPackage1" ]
+ignore_paths = [  ]
+root_path_override = "res://demo/TestPackage1"
+accepted_extensions = [ "png", "jpg", "webp" ]
+export_dependencies_when_exported = false
+dependencies = [  ]

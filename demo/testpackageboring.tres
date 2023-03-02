@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://addons/gpm/base_package/packagedescription.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+filename = "testpackageboring"
+paths = [ "res://demo/TestPackageBoringFeature" ]
+ignore_paths = [  ]
+root_path_override = ""
+accepted_extensions = [ "tscn", "gltf", "tres", "gd", "ttf", "json", "spine-json", "atlas", "txt", "material" ]
+export_dependencies_when_exported = false
+dependencies = [  ]

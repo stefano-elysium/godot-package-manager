@@ -1,0 +1,2 @@
+extends PackageDescription
+class_name BootloaderPackageDescription
