@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="PackageDescription" load_steps=2 format=3 uid="uid://bpiiu83iwvbcb"]
+
+[ext_resource type="Script" path="res://addons/godotpackagesystem/bootloader/packagedescription.gd" id="1_j6gqp"]
+
+[resource]
+script = ExtResource("1_j6gqp")
+server_version = 1.0
+current_version = 1.0
+filename = "bootloader"
+export_dirs = PackedStringArray("res://addons/godotpackagesystem/bootloader")
+ignore_dirs = PackedStringArray()
+root_path_override = ""
+dependencies = PackedStringArray()
+export_dependencies_when_exported = false
+accepted_extensions = PackedStringArray("png", "jpg", "webp", "tscn", "gltf", "tres", "gd", "ttf", "json", "spine-json", "atlas", "txt", "material")

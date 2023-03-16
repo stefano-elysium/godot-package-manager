@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="PackageDescription" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/godotpackagesystem/bootloader/packagedescription.gd" id="1_8kf1g"]
+
+[resource]
+script = ExtResource("1_8kf1g")
+server_version = 1.0
+current_version = 1.0
+filename = "testpck_override"
+export_dirs = PackedStringArray("res://packages_source/testpck_override")
+ignore_dirs = PackedStringArray()
+root_path_override = "res://packages_source/testpck"
+dependencies = PackedStringArray()
+accepted_extensions = PackedStringArray("png", "jpg", "webp", "tscn", "gltf", "tres", "gd", "ttf", "json", "spine-json", "atlas", "txt", "material")

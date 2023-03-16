@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PackageList" load_steps=2 format=3 uid="uid://dqobru7g3hvc7"]
+
+[ext_resource type="Script" path="res://addons/godotpackagesystem/bootloader/packagelist.gd" id="1_d5pcc"]
+
+[resource]
+script = ExtResource("1_d5pcc")
+packages = PackedStringArray("res://packages_source/testpck/testpck.tres", "res://packages_source/testpck_override/testpck_override.tres")
+export_bootloader = true

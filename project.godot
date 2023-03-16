@@ -6,83 +6,26 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
-
-_global_script_classes=[ {
-"base": "Node",
-"class": "AssetLoader",
-"language": "GDScript",
-"path": "res://addons/gpm/import/assetloader.gd"
-}, {
-"base": "PackageDescription",
-"class": "BootloaderPackageDescription",
-"language": "GDScript",
-"path": "res://addons/gpm/base_package/bootloaderpackagedescription.gd"
-}, {
-"base": "Node",
-"class": "BoringFeature",
-"language": "GDScript",
-"path": "res://demo/TestPackageBoringFeature/BoringFeature.gd"
-}, {
-"base": "BoringFeature",
-"class": "CoolFeature",
-"language": "GDScript",
-"path": "res://demo/TestPackageCoolFeature/CoolFeature.gd"
-}, {
-"base": "EditorExportPlugin",
-"class": "EditorPackageExporter",
-"language": "GDScript",
-"path": "res://addons/gpm/export/editorpackageexporterplugin.gd"
-}, {
-"base": "Resource",
-"class": "PackageDescription",
-"language": "GDScript",
-"path": "res://addons/gpm/base_package/packagedescription.gd"
-}, {
-"base": "Node",
-"class": "PackageExporter",
-"language": "GDScript",
-"path": "res://addons/gpm/export/packageexporter.gd"
-}, {
-"base": "Resource",
-"class": "PackageList",
-"language": "GDScript",
-"path": "res://addons/gpm/base_package/packagelist.gd"
-} ]
-_global_script_class_icons={
-"AssetLoader": "",
-"BootloaderPackageDescription": "",
-"BoringFeature": "",
-"CoolFeature": "",
-"EditorPackageExporter": "",
-"PackageDescription": "",
-"PackageExporter": "",
-"PackageList": ""
-}
+config_version=5
 
 [application]
 
-config/name="godot-package-manager"
-run/main_scene="res://addons/gpm/base_package/bootloader.tscn"
-config/icon="res://demo/icon.png"
-run/root_package_list="res://demo/base_packagelist.tres"
-run/_original_main_scene="res://demo/TestPackage1/main_scene.tscn"
+config/name="packagesystem"
+run/main_scene="res://addons/godotpackagesystem/bootloader/bootloader_scene.tscn"
+config/features=PackedStringArray("4.0", "GL Compatibility")
+config/icon="res://icon.svg"
+run/main_package_list="res://main_package_list.tres"
+run/original_main_scene="res://packages_source/testpck/assets/test.tscn"
+
+[autoload]
+
+PackageServer="*res://addons/godotpackagesystem/bootloader/packageserver.gd"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/gpm/plugin.cfg" )
-
-[gui]
-
-common/drop_mouse_on_gui_input_disabled=true
-
-[physics]
-
-common/enable_pause_aware_picking=true
+enabled=PackedStringArray("res://addons/godotpackagesystem/plugin.cfg")
 
 [rendering]
 
-quality/driver/driver_name="GLES2"
-vram_compression/import_etc=true
-vram_compression/import_etc2=false
-environment/default_environment="res://demo/default_env.tres"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

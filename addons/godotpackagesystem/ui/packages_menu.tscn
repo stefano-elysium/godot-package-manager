@@ -1,0 +1,66 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2na8qw273top"]
+
+[ext_resource type="Script" path="res://addons/godotpackagesystem/ui/packages_menu.gd" id="1_0q5vo"]
+
+[node name="packages" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0q5vo")
+
+[node name="TopBar" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="Button" type="Button" parent="TopBar"]
+layout_mode = 0
+offset_right = 111.0
+offset_bottom = 31.0
+text = "Get Packages"
+
+[node name="Bottom" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ControlLeft" type="Control" parent="Bottom"]
+layout_direction = 1
+layout_mode = 1
+anchor_right = 0.2
+anchor_bottom = 1.0
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Bottom/ControlLeft"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ItemList" type="ItemList" parent="Bottom/ControlLeft"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+auto_height = true
+same_column_width = true
+fixed_column_width = 200
+
+[node name="ControlRight" type="Control" parent="Bottom"]
+layout_mode = 1
+anchor_left = 0.2
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[connection signal="pressed" from="TopBar/Button" to="." method="get_packages"]

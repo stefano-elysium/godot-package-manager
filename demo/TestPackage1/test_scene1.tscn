@@ -1,6 +1,0 @@
-[gd_scene format=2]
-
-[node name="Blue" type="ColorRect"]
-margin_right = 100.0
-margin_bottom = 100.0
-color = Color( 0, 0, 1, 1 )

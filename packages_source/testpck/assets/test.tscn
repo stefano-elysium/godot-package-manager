@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cdexgvtcst11u"]
+
+[ext_resource type="Texture2D" uid="uid://geab18xwiysf" path="res://packages_source/testpck/assets/icon1.png" id="1_qg5c2"]
+
+[node name="test" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_qg5c2")
+centered = false
