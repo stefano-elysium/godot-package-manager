@@ -3,6 +3,15 @@ import { open } from 'sqlite'
 
 import express from 'express'
 
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const path = require('path');
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 var app = express()
 var db = await open({
   filename: './database.db',

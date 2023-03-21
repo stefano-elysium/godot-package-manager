@@ -16,6 +16,12 @@ func _on_package_selected(i):
 	var output = JSON.parse_string(res.get_string_from_ascii());
 	if(output == null): return;
 	print(output);
+	var package = await http_get("/download_package", {"name":available_package_names[i]});
+	var file = FileAccess.open("res://Downloaded/file.7z", FileAccess. WRITE);
+	file.store_buffer(package);
+	print("File ", FileAccess.get_open_error())
+
+	print("package " , package);
 
 func get_packages():
 	$Bottom/ControlLeft/ItemList.clear();
