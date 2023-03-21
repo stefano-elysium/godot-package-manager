@@ -17,11 +17,11 @@ func _on_package_selected(i):
 	if(output == null): return;
 	print(output);
 	var package = await http_get("/download_package", {"name":available_package_names[i]});
-	var file = FileAccess.open("res://Downloaded/file.7z", FileAccess. WRITE);
-	file.store_buffer(package);
-	print("File ", FileAccess.get_open_error())
+	var file = FileAccess.open("res://file.7z", FileAccess. WRITE);
+	#print("File ", package)
+	#file.store_buffer(package);
 
-	print("package " , package);
+	#print("package " , package);
 
 func get_packages():
 	$Bottom/ControlLeft/ItemList.clear();
@@ -50,11 +50,14 @@ func http_get(path, data):
 
 	if(!http_client.has_response()):
 		return null;
+		
 	var rb = PackedByteArray()
 	while http_client.get_status() == HTTPClient.STATUS_BODY:
 		http_client.poll()
 		rb += http_client.read_response_body_chunk()
+		print("CHUNK")
 		await get_tree().process_frame
+		
 	return rb;
 	
 

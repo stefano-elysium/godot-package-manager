@@ -70,7 +70,7 @@ app.get('/download_package', (req, res) => {
     const fileName = name+".7z";
     res.sendFile(fileName, options, function (err) {
         if (err) { 
-          next(err);
+          console.error(err);
         } else { 
           console.log('Sent:', fileName);
         }
