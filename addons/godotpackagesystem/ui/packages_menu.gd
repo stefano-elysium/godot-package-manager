@@ -18,10 +18,27 @@ func _on_package_selected(i):
 	print(output);
 	var package = await http_get("/download_package", {"name":available_package_names[i]});
 	var file = FileAccess.open("res://file.7z", FileAccess. WRITE);
-	#print("File ", package)
-	#file.store_buffer(package);
+	file.store_buffer(package);
+	file.flush();
+	print("Downloaded")
+	#Extract
+	print("Extracting...");
+	var unziped = read_zip_file("res://file.7z");
+	var _file = FileAccess.open("res://" + available_package_names[i], FileAccess.WRITE_READ);
+	_file.store_buffer(unziped);
+	file.flush();
+	print("Extracted ", available_package_names[i])
 
-	#print("package " , package);
+func read_zip_file(path):
+	var reader := ZIPReader.new()
+	var err := reader.open(path)
+	if err != OK:
+		print("Zip not opened ", err)
+		return PackedByteArray()
+	var res := reader.read_file(path)
+	reader.close()
+	return res
+
 
 func get_packages():
 	$Bottom/ControlLeft/ItemList.clear();
