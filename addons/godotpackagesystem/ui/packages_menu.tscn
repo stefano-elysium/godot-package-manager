@@ -64,4 +64,26 @@ anchor_left = 0.2
 anchor_right = 1.0
 anchor_bottom = 1.0
 
+[node name="Version" type="TextEdit" parent="Bottom/ControlRight"]
+layout_mode = 0
+offset_right = 169.0
+offset_bottom = 32.0
+text = "Version:  "
+context_menu_enabled = false
+
+[node name="Download" type="Button" parent="Bottom/ControlRight"]
+layout_mode = 0
+offset_top = 33.0
+offset_right = 168.0
+offset_bottom = 69.0
+text = "Download"
+
+[node name="Upload" type="Button" parent="Bottom/ControlRight"]
+layout_mode = 0
+offset_left = 0.599991
+offset_top = 71.0
+offset_right = 168.6
+offset_bottom = 107.0
+text = "Upload"
+
 [connection signal="pressed" from="TopBar/Button" to="." method="get_packages"]

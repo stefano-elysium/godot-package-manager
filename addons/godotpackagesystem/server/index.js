@@ -12,6 +12,8 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const multer = require('multer');
+
 var app = express()
 var db = await open({
   filename: './database.db',
@@ -48,6 +50,7 @@ app.get('/package_info', (req, res) => {
   if(check_headers(req.headers)) return res.send("empty");
   console.log(req.query);
   let name = req.query.name;
+  let version = req.query.version;
   if(name){
     db.all('SELECT * FROM PACKAGES WHERE name=\''+name+'\'').then(
       (data)=>{res.send(data); }
@@ -55,7 +58,6 @@ app.get('/package_info', (req, res) => {
   } else {
     res.send("empty")
   }
-  
 });
 
 app.get('/download_package', (req, res) => {
@@ -67,7 +69,7 @@ app.get('/download_package', (req, res) => {
         root: path.join(__dirname)
     };
 
-    const fileName = name+".7z";
+    const fileName =  "Packages/"+name+".zip";
     res.sendFile(fileName, options, function (err) {
         if (err) { 
           console.error(err);
@@ -80,10 +82,11 @@ app.get('/download_package', (req, res) => {
   }
 });
 
+
+
 app.post('/upload_package', (req, res) => {
-  if(check_headers(req.headers)) return res.send("empty");
-  
-  res.send('Unfinished')
+  console.log("Uploading...");
+  console.log("file " + req.file.buffer);
 });
 
 app.listen(port, () => {

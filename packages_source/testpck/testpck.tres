@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PackageDescription" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="PackageDescription" load_steps=2 format=3 uid="uid://hwq07qr47v3v"]
 
 [ext_resource type="Script" path="res://addons/godotpackagesystem/bootloader/packagedescription.gd" id="1_1y7bj"]
 
@@ -11,4 +11,5 @@ export_dirs = PackedStringArray("res://packages_source/testpck")
 ignore_dirs = PackedStringArray()
 root_path_override = ""
 dependencies = PackedStringArray()
+export_dependencies_when_exported = false
 accepted_extensions = PackedStringArray("png", "jpg", "webp", "tscn", "gltf", "tres", "gd", "ttf", "json", "spine-json", "atlas", "txt", "material")
