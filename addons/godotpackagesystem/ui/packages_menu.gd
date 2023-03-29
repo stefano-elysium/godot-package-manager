@@ -51,6 +51,17 @@ func read_zip_file(path):
 	print("Extracted ");
 	return res
 
+	
+func upload():
+
+	print("Uploading...")
+	var body = {
+		"name":"file.zip",
+		"data": Marshalls.raw_to_base64(FileAccess.get_file_as_bytes("res://file.zip"))
+	}
+	var s = await http_post("/upload_package", JSON.stringify(body));
+	print("Uploaded")
+
 func get_packages():
 	$Bottom/ControlLeft/ItemList.clear();
 	var res = await http_get("/packages", {})
@@ -65,13 +76,20 @@ func get_packages():
 	for package_path in available_package_names:
 		$Bottom/ControlLeft/ItemList.add_item(package_path)
 
-func http_get(path, data):
+func http_get(path, urlparams):
+	return await http_request(path, HTTPClient.METHOD_GET, urlparams);
+	
+func http_post(path, body):
+	return await http_request(path, HTTPClient.METHOD_POST, {}, ["Content-Type:application/json"], body);
+	
+func http_request(path, type, urlparams = {}, headers = [], body = ""):
 	http_client.connect_to_host(host, port)
 	while http_client.get_status() == HTTPClient.STATUS_CONNECTING or http_client.get_status() == HTTPClient.STATUS_RESOLVING:
 		http_client.poll()
 		await get_tree().process_frame
 	
-	http_client.request(HTTPClient.METHOD_GET, path+"?"+http_client.query_string_from_dict(data), http_headers, "");
+	headers.append_array(http_headers);
+	http_client.request(type, path+"?"+http_client.query_string_from_dict(urlparams), headers, body);
 	while http_client.get_status() == HTTPClient.STATUS_REQUESTING:
 		http_client.poll()
 		await get_tree().process_frame
@@ -87,57 +105,3 @@ func http_get(path, data):
 		
 	return rb;
 
-func upload():
-	print("Uploading...")
-	var s = await new_upload();
-	print("Uploaded")
-
-func upload_file(path):
-	print("upload " , path)
-	var file = FileAccess.open(path,FileAccess.READ);
-	var file_content = file.get_buffer(file.get_length());
-	
-	var body = PackedByteArray();
-	body.append_array(file_content);
-
-	http_client.connect_to_host(host, port);
-	while http_client.get_status() == HTTPClient.STATUS_CONNECTING or http_client.get_status() == HTTPClient.STATUS_RESOLVING:
-		http_client.poll()
-		await get_tree().process_frame
-
-	http_client.request_raw(HTTPClient.METHOD_POST, "/upload_package", http_headers, body);
-	
-	while http_client.get_status() == HTTPClient.STATUS_REQUESTING:
-		http_client.poll()
-		await get_tree().process_frame
-
-func new_upload():
-	var file = FileAccess.open('res://icon.svg', FileAccess.READ)
-	var file_content = file.get_buffer(file.get_length())
-
-	var body = PackedByteArray()
-	body.append_array("\r\n--WebKitFormBoundaryePkpFF7tjBAqx29L\r\n".to_utf8_buffer())
-	body.append_array("Content-Disposition: form-data; name=\"image\"; filename=\"icon.svg\"\r\n".to_utf8_buffer())
-	body.append_array("Content-Type: image/svg\r\n\r\n".to_utf8_buffer())
-	body.append_array(file_content)
-	body.append_array("\r\n--WebKitFormBoundaryePkpFF7tjBAqx29L--\r\n".to_utf8_buffer())
-
-	http_client.connect_to_host(host, port);
-
-	while http_client.get_status() == HTTPClient.STATUS_CONNECTING or http_client.get_status() == HTTPClient.STATUS_RESOLVING:
-		http_client.poll()
-		OS.delay_msec(500)
-
-	assert(http_client.get_status() == HTTPClient.STATUS_CONNECTED) # Could not connect
-
-	var err = http_client.request_raw(HTTPClient.METHOD_POST, "/upload_package" , http_headers, body)
-
-	assert(err == OK) # Make sure all is OK.
-
-	while http_client.get_status() == HTTPClient.STATUS_REQUESTING:
-		# Keep polling for as long as the request is being processed.
-		http_client.poll()
-		if not OS.has_feature("web"):
-			OS.delay_msec(500)
-		else:
-			await Engine.get_main_loop()

@@ -3,6 +3,7 @@ import { open } from 'sqlite'
 
 import express from 'express'
 
+
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const path = require('path');
@@ -13,8 +14,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 var fs = require('fs');
+var bodyParser = require('body-parser')
 
 var app = express()
+app.use(bodyParser.json({limit: '256mb'}))
+
 var db = await open({
   filename: './database.db',
   driver: sqlite3.Database
@@ -31,6 +35,16 @@ db.exec(`CREATE TABLE IF NOT EXISTS PACKAGES (
 //very very basic security
 const key = "bc6e3a0af8a9481c2f57e80435becbf922f15fbeedc756dafce7c7ecb33296a2"
 const port = 3000
+
+let base64ToBuffer = (str)=>{
+    str = atob(str); // creates a ASCII string
+    var buffer = new ArrayBuffer(str.length),
+        view = new Uint8Array(buffer);
+    for(var i = 0; i < str.length; i++){
+        view[i] = str.charCodeAt(i);
+    }
+    return Buffer.from( new Uint8Array(buffer) );
+}
 
 let check_headers = (headers)=>{
   if(headers.key != key) return true;
@@ -87,36 +101,14 @@ app.get('/download_package', (req, res) => {
 app.post('/upload_package', (req, res) => {
   console.log("Uploading...");
   if(check_headers(req.headers)) return res.send("empty");
-
-  var data = fs.readFile()
-
-  file = req.files.FormFieldName;
-  console.log("done!");
-  //res.send('Unfinished')
-  // console.log("file posting " + req.files);
-  let upload_file;
-  let upload_path;
-
-  console.log("files "+ req);
-  if(!req || Object.keys(req).length === 0){
-    console.log("error with uploading files!")
-    return res.status(400).send('No files were uploaded');
-  }
-
-  upload_file = req.files.sampleFile;
-  upload_path = 'uploaded/' + upload_file.name;
-
-  upload_file.mv(upload_path, function(err){
-  if(err)
-   return res.status(500).send(err);
-    
-  res.send('File uploaded');
-  });
+  //console.log(req.body);
+  var body = req.body;
+  var data = base64ToBuffer(body.data);
+  fs.writeFileSync(body.name, data, "binary");
+  res.send("success")
   console.log("uploaded!");
 });
 
 app.listen(port, () => {
   console.log(`GPM Server listening on port ${port}`)
 })
-
-
