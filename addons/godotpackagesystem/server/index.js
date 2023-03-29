@@ -12,7 +12,7 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const multer = require('multer');
+var fs = require('fs');
 
 var app = express()
 var db = await open({
@@ -86,7 +86,33 @@ app.get('/download_package', (req, res) => {
 
 app.post('/upload_package', (req, res) => {
   console.log("Uploading...");
-  console.log("file " + req.file.buffer);
+  if(check_headers(req.headers)) return res.send("empty");
+
+  var data = fs.readFile()
+
+  file = req.files.FormFieldName;
+  console.log("done!");
+  //res.send('Unfinished')
+  // console.log("file posting " + req.files);
+  let upload_file;
+  let upload_path;
+
+  console.log("files "+ req);
+  if(!req || Object.keys(req).length === 0){
+    console.log("error with uploading files!")
+    return res.status(400).send('No files were uploaded');
+  }
+
+  upload_file = req.files.sampleFile;
+  upload_path = 'uploaded/' + upload_file.name;
+
+  upload_file.mv(upload_path, function(err){
+  if(err)
+   return res.status(500).send(err);
+    
+  res.send('File uploaded');
+  });
+  console.log("uploaded!");
 });
 
 app.listen(port, () => {

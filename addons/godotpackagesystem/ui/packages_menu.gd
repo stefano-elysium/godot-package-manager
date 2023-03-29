@@ -11,7 +11,8 @@ var selected_package_name = null;
 
 func _ready():
 	http_client.blocking_mode_enabled = true;
-	$Bottom/ControlLeft/ItemList.item_activated.connect(_on_package_selected);
+	#$Bottom/ControlLeft/ItemList.item_activated.connect(_on_package_selected);
+	$Bottom/ControlLeft/ItemList.item_selected.connect(_on_package_selected);
 	$Bottom/ControlRight/Upload.pressed.connect(self.upload);
 
 func _on_package_selected(i):
@@ -109,13 +110,6 @@ func upload_file(path):
 	while http_client.get_status() == HTTPClient.STATUS_REQUESTING:
 		http_client.poll()
 		await get_tree().process_frame
-
-	#print("response ", http_client.read_response_body_chunk())
-#	if error != OK:
-#		push_error("An error occurred in the HTTP request.")
-#		print("file upload error " , error);
-#	else :
-#		print("should be posted")
 
 func new_upload():
 	var file = FileAccess.open('res://icon.svg', FileAccess.READ)
