@@ -29,18 +29,26 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 93.0
+offset_top = 164.0
+offset_bottom = 71.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ControlLeft" type="Control" parent="Bottom"]
+[node name="Server" type="Control" parent="Bottom"]
 layout_direction = 1
 layout_mode = 1
 anchor_right = 0.2
 anchor_bottom = 1.0
 grow_vertical = 2
 
-[node name="Panel" type="Panel" parent="Bottom/ControlLeft"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Bottom/Server"]
+layout_mode = 0
+offset_top = -35.0
+offset_right = 231.0
+offset_bottom = -1.0
+text = "Server"
+
+[node name="Panel" type="Panel" parent="Bottom/Server"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,7 +56,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ItemList" type="ItemList" parent="Bottom/ControlLeft"]
+[node name="ItemList" type="ItemList" parent="Bottom/Server"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -58,11 +66,47 @@ max_columns = 3
 same_column_width = true
 fixed_column_width = 200
 
-[node name="ControlRight" type="Control" parent="Bottom"]
+[node name="Local" type="Control" parent="Bottom"]
+layout_direction = 1
 layout_mode = 1
-anchor_left = 0.2
+anchor_right = 0.2
+anchor_bottom = 1.0
+grow_vertical = 2
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Bottom/Local"]
+layout_mode = 0
+offset_left = 453.0
+offset_top = -35.0
+offset_right = 684.0
+offset_bottom = -1.0
+text = "Local"
+
+[node name="Panel" type="Panel" parent="Bottom/Local"]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LocalItemList" type="ItemList" parent="Bottom/Local"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 451.0
+offset_right = 451.0
+auto_height = true
+max_columns = 3
+same_column_width = true
+fixed_column_width = 200
+
+[node name="ControlRight" type="Control" parent="Bottom"]
+layout_mode = 1
+anchor_right = 1.949
+anchor_bottom = 1.0
+offset_left = 230.0
+offset_right = -0.0495605
 
 [node name="Version" type="TextEdit" parent="Bottom/ControlRight"]
 layout_mode = 0

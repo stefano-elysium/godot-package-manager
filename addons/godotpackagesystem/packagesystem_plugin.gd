@@ -14,7 +14,7 @@ func _enter_tree():
 	editor_menu = load("res://addons/godotpackagesystem/ui/packages_menu.tscn").instantiate();
 	_make_visible(false)
 	get_editor_interface().get_editor_main_screen().add_child(editor_menu)
-	
+	PackageServer.plugin = self;
 	print("GPM enabled")
 
 func _exit_tree():

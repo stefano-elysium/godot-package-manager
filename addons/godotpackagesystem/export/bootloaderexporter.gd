@@ -2,8 +2,6 @@ extends PackageExporter
 class_name BootLoaderExporter
 
 func export():
-
-			
 	package_description = load("res://addons/godotpackagesystem/export/bootloaderpck.tres");
 	prints("Exporting BOOTLOADER ", package_description.filename, "...");
 

@@ -24,7 +24,7 @@ var db = await open({
   driver: sqlite3.Database
 });
 db.exec(`CREATE TABLE IF NOT EXISTS PACKAGES (
-  id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   description TEXT NOT NULL,
   author TEXT NOT NULL,
@@ -96,8 +96,6 @@ app.get('/download_package', (req, res) => {
   }
 });
 
-
-
 app.post('/upload_package', (req, res) => {
   console.log("Uploading...");
   if(check_headers(req.headers)) return res.send("empty");
@@ -107,7 +105,25 @@ app.post('/upload_package', (req, res) => {
   fs.writeFileSync(body.name, data, "binary");
   res.send("success")
   console.log("uploaded!");
-});
+  let name = body.name;
+  let version = body.version;
+  let description = body.description;
+  let author = body.author;
+
+  console.log("Version" + body.version);
+//var values = "0,'Aditya', 'aditya@gail.com', 'GODO', 1";
+//"INSERT INTO PACKAGES VALUES (15, 'Aditya', 'aditya@gail.com', 'GODO', 1)"
+  if(name){
+    db.all('SELECT * FROM PACKAGES WHERE name=\''+name+'\'').then(
+      (data)=>{console.log("found " + name);}
+    );}
+  //if(name){
+    //db.all("INSERT INTO PACKAGES (name,description,author,version) VALUES(?,?,?,?) ", [name, 'for testing', 'GODO', 1], function (err, result) {
+     // if (err) throw err;});
+    //};
+    
+  }
+)
 
 app.listen(port, () => {
   console.log(`GPM Server listening on port ${port}`)
