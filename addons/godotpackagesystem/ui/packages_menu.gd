@@ -13,30 +13,51 @@ func _ready():
 	http_client.blocking_mode_enabled = true;
 	$Bottom/Server/ItemList.item_selected.connect(_on_package_selected);
 	$Bottom/Local/LocalItemList.item_selected.connect(_on_local_package_selected);
+	$Bottom/ControlRight/Upload.disabled = false;
+	$Bottom/ControlRight/Download.disabled = false;
 	$Bottom/ControlRight/Upload.pressed.connect(self.upload);
 	$Bottom/ControlRight/Download.pressed.connect(self.download);
 
 func _on_package_selected(i):
+	$Bottom/ControlRight/Description.text = "description: ";
 	var res = await http_get("/package_info", {"name":available_package_names[i]})
-	if(res == null): return; #Push error, eventually
+	if(res == null): return;
 	var output = JSON.parse_string(res.get_string_from_ascii());
 	if(output == null): return;
 	print(output);
 	selected_package_name = available_package_names[i];
-	var version = -1;
-	if("version" in output[0]):
-		version = output[0].version;
-	print(PackageServer.get_package_version(selected_package_name));
-	$Bottom/ControlRight/Version.text = "version: " + str(version);
+	var versions = [];
+	$Bottom/ControlRight/VersionOptionButton.clear()
+	if (len(output) > 0):
+		for y in len(output):
+			versions.append(output[y].version);
+		for ii in versions:
+			$Bottom/ControlRight/VersionOptionButton.add_item(str(ii));
+		$Bottom/ControlRight/VersionOptionButton.select($Bottom/ControlRight/VersionOptionButton.get_item_count() - 1)
+	else: 
+		$Bottom/ControlRight/VersionOptionButton.add_item(str(output[0].version));
+	$Bottom/ControlRight/Description.text = "description: " + str(PackageServer.get_description(selected_package_name));
 	$Bottom/Local/LocalItemList.deselect_all();
 
 func _on_local_package_selected(i):
 	$Bottom/Server/ItemList.deselect_all();
+	$Bottom/ControlRight/Upload.disabled = false;
+	$Bottom/ControlRight/Description.editable = false;
+	var selected = $Bottom/Local/LocalItemList.get_item_text(i);
+	var not_in_server = true;
+	for pack in $Bottom/Server/ItemList.item_count:
+		var server_pack = $Bottom/Server/ItemList.get_item_text(pack);
+		if(selected == server_pack):
+			not_in_server = false;
+	if(not_in_server): 
+		$Bottom/ControlRight/Upload.disabled = false;
+		$Bottom/ControlRight/Description.editable = true;
+	selected_package_name = selected;
 
 func download():
 	print("Dowload")
 	if(selected_package_name == "" or selected_package_name == null): return;
-	var package = await http_get("/download_package", {"name":selected_package_name});
+	var package = await http_get("/download_package", {"name":selected_package_name, "version": str($Bottom/ControlRight/VersionOptionButton.selected)});
 	save_to_file(package);
 	var unziped = read_zip_file("res://file.zip");
 
@@ -68,19 +89,30 @@ func read_zip_file(path):
 
 func upload():
 	print("Uploading...");
-	var content = [];
+	var zip := ZIPPacker.new();
+	var err := zip.open("res://file.zip");
+	if err != OK:
+		print(err);
+
 	var dir = DirAccess.open("res://packages_source/" + selected_package_name + "/");
 	if(dir):
 		dir.list_dir_begin();
 		var file_name = dir.get_next();
-#		content.append(file_name);
-#		while file_name != "":
-#			content.append(file_name);
-
+		while file_name != "":
+			if dir.current_is_dir():
+				print("Found direct "  + file_name);#Not implemented
+			else:
+				zip.start_file(file_name);
+				zip.write_file(file_name.to_utf8_buffer());
+				zip.close_file();
+			file_name = dir.get_next();
+	zip.close();
+	var description = $Bottom/ControlRight/Description.text;
+	description = description.replace("Description", "");
 	var body = {
 		"name":selected_package_name,
-		"version":PackageServer.get_package_version(selected_package_name),
-		"description": "no for the moment",
+		"description": PackageServer.get_description(selected_package_name),
+		"version" : PackageServer.get_package_version(selected_package_name),
 		"author":"Godot",
 		"data": Marshalls.raw_to_base64(FileAccess.get_file_as_bytes("res://file.zip"))
 	}
@@ -97,18 +129,20 @@ func get_packages():
 	available_package_names.clear();
 	for path in output:
 		available_package_names.append(path.name);
+	#remove duplicated names
 	for package_path in available_package_names:
-		$Bottom/Server/ItemList.add_item(package_path)
+		var is_listed = false;
+		for package in $Bottom/Server/ItemList.item_count:
+			if(package_path == $Bottom/Server/ItemList.get_item_text(package)): is_listed = true;
+		if(is_listed == false): $Bottom/Server/ItemList.add_item(package_path);
 	#Local
 	$Bottom/Local/LocalItemList.clear();
 	var dir = DirAccess.open("res://packages_source/");
 	if(dir):
 		dir.list_dir_begin();
-		var packages = dir.get_next();
 		var local_packages = dir.get_directories();
 		for pack in local_packages:
 			$Bottom/Local/LocalItemList.add_item(pack);
-		print("Local " , local_packages);
 
 func http_get(path, urlparams):
 	return await http_request(path, HTTPClient.METHOD_GET, urlparams);

@@ -19,6 +19,7 @@ run/original_main_scene="res://packages_source/testpck/assets/test.tscn"
 
 [autoload]
 
+Packageserver="*res://addons/godotpackagesystem/bootloader/packageserver.gd"
 PackageServer="*res://addons/godotpackagesystem/bootloader/packageserver.gd"
 
 [editor_plugins]

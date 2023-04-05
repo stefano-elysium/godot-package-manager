@@ -5,6 +5,7 @@ class_name PackageDescription
 var filename : String;
 var current_version : float = 1.0;
 var server_version : float = 1.0;
+var description : String;
 var export_dirs : PackedStringArray;
 var ignore_dirs : PackedStringArray;
 var dependencies : PackedStringArray;
@@ -25,6 +26,10 @@ func _get_property_list():
 		},{ 
 			"name": "filename",
 			"type" : TYPE_STRING,
+			"usage" : PROPERTY_USAGE_DEFAULT,
+		},{
+			"name":"description",
+			"type":TYPE_STRING,
 			"usage" : PROPERTY_USAGE_DEFAULT,
 		},{ 
 			"name": "export_dirs",

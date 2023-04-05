@@ -39,7 +39,14 @@ func _load_packages():
 		print("An error occurred when trying to access the path.")
 
 func get_package_version(package_name):
+	var version = -1;
 	for package in _all_packages:
 		if(package.filename == package_name):
-			return package.current_version;
-	return -1;
+			version = package.current_version;
+	return version;
+
+func get_description(package_name):
+	for package in _all_packages:
+		if(package.filename == package_name):
+			return package.description;
+	return "";

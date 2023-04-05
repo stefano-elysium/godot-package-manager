@@ -78,12 +78,14 @@ app.get('/download_package', (req, res) => {
   if(check_headers(req.headers)) return res.send("empty");
 
   let name = req.query.name;
+  let version = req.query.version;
   if(name){
     const options = {
         root: path.join(__dirname)
     };
 
-    const fileName =  "Packages/"+name+".zip";
+
+    const fileName =  "Packages/"+name+ "/" + name + "_v" + version + ".zip";
     res.sendFile(fileName, options, function (err) {
         if (err) { 
           console.error(err);
@@ -101,21 +103,34 @@ app.post('/upload_package', (req, res) => {
   if(check_headers(req.headers)) return res.send("empty");
   //console.log(req.body);
   var body = req.body;
-  var data = base64ToBuffer(body.data);
-  fs.writeFileSync(body.name, data, "binary");
-  res.send("success")
-  console.log("uploaded!");
   let name = body.name;
   let version = body.version;
+
+  const dir = "Packages/"+name;
+  if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir, {recursive: true});
+  }
+
+  var data = base64ToBuffer(body.data);
+  fs.writeFileSync("Packages/"+name+"/"+name+"_"+ version +".zip", data, "binary");
+  res.send("success")
+  console.log("uploaded!");
+
   let description = body.description;
   let author = body.author;
 
-  console.log("Version" + body.version);
-//var values = "0,'Aditya', 'aditya@gail.com', 'GODO', 1";
-//"INSERT INTO PACKAGES VALUES (15, 'Aditya', 'aditya@gail.com', 'GODO', 1)"
   if(name){
     db.all('SELECT * FROM PACKAGES WHERE name=\''+name+'\'').then(
-      (data)=>{console.log("found " + name);}
+      (data)=>{
+        if(data && data.length > 0){
+          console.log("found " + name + "/ ", data[0].version);
+          var version = data[0].version + 1;
+          db.all("UPDATE PACKAGES SET version = ?, description = ?, author = ? WHERE name = ?",[version, description, author, name]);
+        }
+        else{
+          db.all("INSERT INTO PACKAGES (name, description, author, version) VALUES(?,?,?,?)",[name,description,author,body.version]);
+        }
+    }
     );}
   //if(name){
     //db.all("INSERT INTO PACKAGES (name,description,author,version) VALUES(?,?,?,?) ", [name, 'for testing', 'GODO', 1], function (err, result) {
