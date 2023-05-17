@@ -100,7 +100,7 @@ func export(_already_exported = []):
 	exporter.package_description = self;
 	exporter.export();
 
-func import():
+func import(is_boot=false):
 	print ("IMPORTING ", filename)
 	if(ProjectSettings.get("loaded_packages") == null):
 		ProjectSettings.set("loaded_packages", []);
@@ -116,15 +116,19 @@ func import():
 	ProjectSettings.load_resource_pack(pck_path, true)
 	ProjectSettings.get("loaded_packages").append(filename);
 	PackageServer.packages_loaded[filename] = self;
+
 	for item in auto_preload:
 		PackageServer.preloaded_files.append(load(item));
-		
+	
 	if(len(auto_instance) > 0):
-		PackageServer.package_importing_done.connect(on_main_scene_loaded, CONNECT_ONE_SHOT)
-		
+		if(is_boot):
+			PackageServer.package_importing_done.connect(on_package_importing_done, CONNECT_ONE_SHOT)
+		else:
+			on_package_importing_done();
+			
 	print ("IMPORTED ", filename)
 	
-func on_main_scene_loaded():
+func on_package_importing_done():
 	for packedscene in auto_instance:
 		var scene = load(packedscene).instantiate();
 		PackageServer.get_tree().root.add_child.call_deferred(scene);
