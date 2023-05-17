@@ -9,6 +9,8 @@ var description : String;
 var export_dirs : PackedStringArray;
 var ignore_dirs : PackedStringArray;
 var dependencies : PackedStringArray;
+var auto_instance : PackedStringArray;
+var auto_preload : PackedStringArray;
 var export_dependencies_when_exported : bool;
 var accepted_extensions : PackedStringArray = PackedStringArray(["png", "jpg", "webp", "tscn", "gltf", "tres", "gd", "ttf", "json", "spine-json", "atlas", "txt", "material"]);
 var root_path_override : String;
@@ -60,6 +62,18 @@ func _get_property_list():
 			"name": "accepted_extensions",
 			"type" : TYPE_ARRAY,
 			"usage" : PROPERTY_USAGE_DEFAULT
+		},{ 
+			"name": "auto_instance",
+			"type" : TYPE_ARRAY,
+			"usage" : PROPERTY_USAGE_DEFAULT,
+			"hint" : PROPERTY_HINT_ARRAY_TYPE,
+			"hint_string" : str(TYPE_STRING)+"/"+str(PROPERTY_HINT_FILE)+":"+"*.tscn"
+		},{ 
+			"name": "auto_preload",
+			"type" : TYPE_ARRAY,
+			"usage" : PROPERTY_USAGE_DEFAULT,
+			"hint" : PROPERTY_HINT_ARRAY_TYPE,
+			"hint_string" : str(TYPE_STRING)+"/"+str(PROPERTY_HINT_FILE)+":"+"String"
 		}
 	]
 
@@ -101,4 +115,16 @@ func import():
 	var pck_path = "res://packages/"+filename+".pck";
 	ProjectSettings.load_resource_pack(pck_path, true)
 	ProjectSettings.get("loaded_packages").append(filename);
+	PackageServer.packages_loaded[filename] = self;
+	for item in auto_preload:
+		PackageServer.preloaded_files.append(load(item));
+		
+	if(len(auto_instance) > 0):
+		PackageServer.package_importing_done.connect(on_main_scene_loaded, CONNECT_ONE_SHOT)
+		
 	print ("IMPORTED ", filename)
+	
+func on_main_scene_loaded():
+	for packedscene in auto_instance:
+		var scene = load(packedscene).instantiate();
+		PackageServer.get_tree().root.add_child.call_deferred(scene);

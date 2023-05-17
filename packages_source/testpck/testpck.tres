@@ -14,3 +14,5 @@ root_path_override = ""
 dependencies = PackedStringArray()
 export_dependencies_when_exported = false
 accepted_extensions = PackedStringArray("png", "jpg", "webp", "tscn", "gltf", "tres", "gd", "ttf", "json", "spine-json", "atlas", "txt", "material")
+auto_instance = PackedStringArray("res://packages_source/testpck/assets/testautoinstance.tscn")
+auto_preload = PackedStringArray()
