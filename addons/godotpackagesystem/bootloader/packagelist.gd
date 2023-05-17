@@ -28,6 +28,6 @@ func export():
 	if(export_bootloader):
 		load("res://addons/godotpackagesystem/export/bootloaderpck.tres").export();
 		
-func import():
+func import(is_bool=false):
 	for package_path in packages:
-		load(package_path).import();
+		load(package_path).import(is_bool);
