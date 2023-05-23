@@ -6,7 +6,7 @@ var packer : PCKPacker;
 var _paths : Dictionary = {};
 
 func export():
-	#prints("Exporting", package_description.filename, "...");
+	# prints("Exporting", package_description.filename, "...");
 
 	for path in package_description.export_dirs:
 		process_dir_contents(path, path);
@@ -40,7 +40,7 @@ func process_file(path : String, rootdir : String):
 	#print("Found file: " + path);
 	var extension = path.get_extension();
 	if(!package_description.accepted_extensions.has(extension)): return;
-	var folder = path.get_base_dir();
+	# var folder = path.get_base_dir();
 	var import_path = path + ".import";
 	if(FileAccess.file_exists(import_path)):
 		var import_data = get_file_contents(import_path);

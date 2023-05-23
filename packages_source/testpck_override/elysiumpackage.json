@@ -1,0 +1,13 @@
+{
+  "name": "testpck_override",
+  "dependencies": {},
+  "export": {
+    "include": ["testpck_override/"],
+    "ignore": [],
+    "exportDependencies": false,
+    "extensions": ["png", "jpg", "webp", "tscn", "gltf", "tres", "gd", "ttf", "json", "spine-json", "atlas", "txt", "material"]
+  },
+  "override": "testpck",
+  "autoInstantiate": [],
+  "autoPreload": []
+}

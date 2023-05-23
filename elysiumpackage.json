@@ -1,0 +1,8 @@
+{
+  "base-version": "main",
+  "dependencies": {
+    "testpck": "default",
+    "testpck_override": "default"
+  },
+  "autoInstantiate": ["packages_source/testpck/assets/testautoinstance.tscn"]
+}

@@ -30,4 +30,8 @@ func export():
 		
 func import(is_bool=false):
 	for package_path in packages:
+
+		# res://packages_source/testpck/testpck.tres -> packagedescription.gd
+		# res://packages_source/testpck_override/testpck_override.tres -> packagedescription.gd
+		print("package path: ", package_path);
 		load(package_path).import(is_bool);

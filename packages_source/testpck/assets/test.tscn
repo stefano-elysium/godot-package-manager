@@ -1,10 +1,10 @@
 [gd_scene load_steps=2 format=3 uid="uid://byoythr40gv8q"]
 
-[ext_resource type="Texture2D" uid="uid://geab18xwiysf" path="res://packages_source/testpck/assets/icon1.png" id="1_qg5c2"]
+[ext_resource type="Texture2D" uid="uid://geab18xwiysf" path="res://packages_source/testpck/assets/icon1.png" id="1_ljb48"]
 
 [node name="test" type="Node2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(100, 0)
-texture = ExtResource("1_qg5c2")
+texture = ExtResource("1_ljb48")
 centered = false

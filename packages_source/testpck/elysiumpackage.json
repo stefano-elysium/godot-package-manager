@@ -1,0 +1,10 @@
+{
+  "name": "testpck",
+  "dependencies": {},
+  "export": {
+    "include": ["testpck/"],
+    "ignore": [],
+    "exportDependencies": false,
+    "extensions": ["png", "jpg", "webp", "tscn", "gltf", "tres", "gd", "ttf", "json", "spine-json", "atlas", "txt", "material"]
+  }
+}

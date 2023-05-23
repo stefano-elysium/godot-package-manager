@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="PackageDescription" load_steps=2 format=3 uid="uid://blpuvcm7jj4o"]
+[gd_resource type="Resource" script_class="PackageDescription" load_steps=2 format=3 uid="uid://c36m5f0v71ran"]
 
-[ext_resource type="Script" path="res://addons/godotpackagesystem/bootloader/packagedescription.gd" id="1_2s4yo"]
+[ext_resource type="Script" path="res://addons/godotpackagesystem/bootloader/packagedescription.gd" id="1_xc1dk"]
 
 [resource]
-script = ExtResource("1_2s4yo")
+script = ExtResource("1_xc1dk")
 server_version = 1.0
 current_version = 1.0
-filename = ""
+filename = "Slot"
 description = ""
-export_dirs = PackedStringArray()
+export_dirs = PackedStringArray("res://packages_source/slot")
 ignore_dirs = PackedStringArray()
 root_path_override = ""
 dependencies = PackedStringArray()
